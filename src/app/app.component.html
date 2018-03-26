@@ -1,20 +1,55 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<app-navbar></app-navbar> 
 
+<main role="main" class="container">
+  <div class="starter-template">
+    <!-- Welcome text -->
+    <h1>IP Batch Geolocation</h1>
+    <p class="lead">Find the location of multiple IP addresses</p>
+  </div>
+</main><!-- /.container -->
+
+<!-- Map -->
+<div class="">
+  <agm-map #AgmMap [latitude]="lat" [longitude]="lng" [styles]="style">
+    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+    <agm-marker *ngFor="let marker of markers" [latitude]="marker.latitude" [longitude]="marker.longitude"></agm-marker>
+  </agm-map>
+</div>
+
+<main role="main" class="container">
+  <div class="starter-template">
+    
+    <!-- Textarea -->
+    <div class="row">
+      <div [hidden]="markers.length > 0" class="col-lg-12">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">IP List</span>
+        </h4>
+        <form>
+          <div class="form-group">
+            <textarea class="form-control mb-2" id="ipListTextarea" rows="5" placeholder="162.255.119.250 ..." [(ngModel)]="ipList" name="iplist"></textarea>
+          </div>
+        </form>
+      </div>
+      <div [hidden]="markers.length == 0" class="col-lg-12">
+          <h4 class="d-flex justify-content-between align-items-center mt-5 mb-3">
+            <span class="text-muted">Results</span>
+            <span class="badge badge-secondary badge-pill">{{ markers.length }}</span>
+          </h4>
+          <ul class="list-group mb-2">
+            <li *ngFor="let marker of markers" class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                <h6 class="my-0">{{ marker.ip }}</h6>
+              </div>
+              <span class="text-muted">{{ marker.city }}, {{ marker.country_name }} <span class="flag-icon flag-icon-{{ marker.country_code | lowercase }}"></span></span>
+            </li>
+          </ul>
+      </div>
+    </div>
+  </div>
+</main><!-- /.container -->
+
+<footer class="bg-primary text-center">
+  <button [hidden]="markers.length > 0" [disabled]="loading_batch" class="btn btn-lg btn-block btn-primary py-3 my-sm-0" (click)="proccessIPList()" type="submit"><i class="fa" [ngClass]="{'fa-spin':loading_batch, 'fa-circle-o-notch':loading_batch, 'fa-arrow-up':!loading_batch}"></i> {{!loading_batch ? "Submit" : "Loading"}}</button>
+  <button [hidden]="markers.length == 0" class="btn btn-lg btn-block btn-primary py-3 my-sm-0" (click)="reset()" type="submit"><i class="fa fa-undo"></i> Reset</button>
+</footer>
