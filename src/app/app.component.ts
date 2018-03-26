@@ -3,6 +3,8 @@ import { LocationService } from './location.service'
 import { Observable } from 'rxjs/Observable';
 import { GoogleMapsAPIWrapper, AgmMap, LatLngBounds, LatLngBoundsLiteral} from '@agm/core';
 
+declare var google: any;
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -217,19 +219,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     );
   }
 
-/*  getCoordinates(ip) {
-    let ip, lat, lng;
-    this._locationService.getLocation(ip).subscribe(
-        data => { 
-            ip = data.ip,
-            lat = data.latitude,
-            lng = data.longitude
-        },
-        err => console.error(err),
-        () => console.log('Ok.')
-    );
-  }*/
-
 /*
 
 For testing:
@@ -264,25 +253,6 @@ For testing:
                 }
             }
         );
-
-/*    for (let i = 0; i < this.ipList.split('\n').length; i++) {
-        let ip = this.ipList.split('\n')[i];
-        this._locationService.getLocation(ip).subscribe(
-            data => {
-                console.log("Processing line-> " + ip + " latitude=" + data['latitude'])
-                this.markers.push({
-                    "ip":data['ip'], 
-                    "country_name":data['country_name'], 
-                    "country_code":data['country_code'], 
-                    "city":data['city'], 
-                    "lat":data['latitude'], 
-                    "lng":data['longitude']
-                });
-                bounds.extend(new google.maps.LatLng(data['latitude'], data['longitude']));
-                this.map.fitBounds(bounds);
-            }
-        );
-    }*/
   }
 
   reset() {
